@@ -13,16 +13,16 @@ test('Registro de usuario nuevo', async ({ page }) => {
 
   // Página de login inicial
   await loginPage.goto();
-//   await expect(page).toHaveScreenshot('01-login-page.png');
+  await expect(page).toHaveScreenshot('01-login-page.png');
 
   // Navegar a registro
   await loginPage.goToRegisterPage();
-//   await expect(page).toHaveScreenshot('02-register-page.png');
+  await expect(page).toHaveScreenshot('02-register-page.png');
 
   // Completar registro
   await registerPage.register(firstName, lastName, username, password);
 
   // Aquí validamos que volvió a login luego de registro
   await expect(page).toHaveURL(/.*login/);
-//   await expect(page).toHaveScreenshot('03-after-registration.png');
+  await expect(page).toHaveScreenshot('03-after-registration.png');
 });

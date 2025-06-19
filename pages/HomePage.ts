@@ -1,4 +1,3 @@
-// pages/HomePage.ts
 import { Page, Locator } from '@playwright/test';
 
 export class HomePage {

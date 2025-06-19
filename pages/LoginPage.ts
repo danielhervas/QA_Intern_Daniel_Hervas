@@ -1,4 +1,3 @@
-// pages/LoginPage.ts
 import { Page, Locator } from '@playwright/test';
 
 export class LoginPage {
@@ -22,8 +21,6 @@ export class LoginPage {
     // Rellenar campos
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
-
-    // Pulsar Enter en password para disparar ng-submit
     await this.passwordInput.press('Enter');
   }
 

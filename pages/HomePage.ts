@@ -16,12 +16,12 @@ export class HomePage {
   }
 
   async deleteUser(username: string) {
-    const userRow = this.page.locator('tr', { hasText: username });
+    const userRow = this.page.locator('li', { hasText: username });
     const deleteButton = userRow.locator('a', { hasText: 'Delete' });
     await deleteButton.click();
   }
 
   async isUserVisible(username: string): Promise<boolean> {
-    return await this.page.locator('tr', { hasText: username }).isVisible();
+    return await this.page.locator('li', { hasText: username }).isVisible();
   }
 }

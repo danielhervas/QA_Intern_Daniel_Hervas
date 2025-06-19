@@ -8,25 +8,40 @@ test('Eliminar usuario tras login', async ({ page }) => {
   const registerPage = new RegisterPage(page);
   const homePage = new HomePage(page);
 
-  const username = `user_${Date.now()}`;
+  const timestamp = Date.now();
+  const username = `user_${timestamp}`;
   const password = 'Test123!';
   const firstName = 'Mario';
   const lastName = 'Gómez';
 
+  // 1. Ir al LoginPage
   await loginPage.goto();
-//   await expect(page).toHaveScreenshot('01-login-page.png');
 
+  // 2. Ir al RegisterPage
   await loginPage.goToRegisterPage();
-//   await expect(page).toHaveScreenshot('02-register-page.png');
 
+  // 3. Registrar nuevo usuario
   await registerPage.register(firstName, lastName, username, password);
-//   await expect(page).toHaveScreenshot('03-after-registration.png');
 
+    // 3) Espero a que acabe de redirigir a /#/login
+  await page.waitForURL(/#\/login$/, { timeout: 5000 });
+  // (Opcional) recargo para asegurar estado limpio
+  await loginPage.goto();
+
+  // 4) Hago login pulsando Enter
   await loginPage.login(username, password);
-  await expect(page.locator('tr', { hasText: username })).toBeVisible();
-//   await expect(page).toHaveScreenshot('04-homepage-after-login.png');
 
+  // 5. Esperar a que el HomePage esté cargado (más confiable que solo URL)
+//   const usersTitle = page.locator('h3.ng-scope', { hasText: 'All registered users:' });
+//   await expect(usersTitle).toBeVisible({ timeout: 10000 });
+
+  // 6. Confirmar que el usuario está visible en la lista
+  const userRow = page.locator('li.ng-binding', { hasText: username });
+  await expect(userRow).toBeVisible({ timeout: 10000 });
+
+  // 7. Eliminar usuario
   await homePage.deleteUser(username);
-  await expect(page.locator('tr', { hasText: username })).toHaveCount(0);
-//   await expect(page).toHaveScreenshot('05-after-user-deletion.png');
+
+  // 8. Confirmar que ya no está
+  await expect(userRow).toHaveCount(0);
 });

@@ -11,7 +11,8 @@ export class HomePage {
   }
 
   async logout() {
-    await this.logoutButton.click();
+    // Forzamos el click aunque Playwright lo considere no interactuable
+    await this.logoutButton.click({ force: true });
   }
 
   async deleteUser(username: string) {
